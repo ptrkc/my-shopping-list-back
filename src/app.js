@@ -1,8 +1,7 @@
 import express from "express";
 import cors from "cors";
-
 import connection from "./database.js";
-import joi from "joi";
+import { checkItem } from "./functions/checkItems.js";
 
 const app = express();
 app.use(express.json());
@@ -31,13 +30,5 @@ app.post("/items", async (req, res) => {
         res.sendStatus(500);
     }
 });
-
-function checkItem(object) {
-    const schema = joi.object({
-        text: joi.string().trim().replace(/[<>]/g, "").required(),
-    });
-    const error = schema.validate(object).error;
-    return error ? false : object.text.trim().replace(/[<>]/g, "");
-}
 
 export default app;
